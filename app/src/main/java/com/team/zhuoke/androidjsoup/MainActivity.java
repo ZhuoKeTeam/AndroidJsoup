@@ -6,7 +6,6 @@ import android.os.Message;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,7 +14,9 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.team.zhuoke.entitys.MyData;
+import com.team.zhuoke.androidjsoup.db.DBUtils;
+import com.team.zhuoke.androidjsoup.db.interfaces.IMyDataService;
+import com.team.zhuoke.androidjsoup.db.table.MyData;
 import com.team.zhuoke.entitys.Note;
 
 import org.jsoup.Jsoup;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //装载内容页地址
     private ArrayList<String> urlList;
     private int page;//页数
+
+    private IMyDataService myDataService;
 
     private Handler handler = new Handler() {
         @Override
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        myDataService = DBUtils.getInstance().getMobileBeanFactory().getBean(IMyDataService.class);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initView();
@@ -178,15 +182,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String priceString;
         if (price != null) {
             priceString = price.text();
-            MyData data = new MyData(noteIdStr, exString, currString, lossString, priceString);
-            Log.e("4444", url + "\n" + data.toString());
-            boolean isSaved = saveData(data);
-            if (isSaved) {
-                handler.sendEmptyMessage(0x02);
-                urlList.add(url);
-            } else {
-                handler.sendEmptyMessage(0x03);
-            }
+            //MyData data = new MyData(noteIdStr, exString, currString, lossString, priceString);
+//            Log.e("4444", url + "\n" + data.toString());
+//            boolean isSaved = saveData(data);
+//            if (isSaved) {
+//                handler.sendEmptyMessage(0x02);
+//                urlList.add(url);
+//            } else {
+//                handler.sendEmptyMessage(0x03);
+//            }
         }
     }
 
