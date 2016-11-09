@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -182,15 +183,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String priceString;
         if (price != null) {
             priceString = price.text();
-            //MyData data = new MyData(noteIdStr, exString, currString, lossString, priceString);
-//            Log.e("4444", url + "\n" + data.toString());
-//            boolean isSaved = saveData(data);
-//            if (isSaved) {
-//                handler.sendEmptyMessage(0x02);
-//                urlList.add(url);
-//            } else {
-//                handler.sendEmptyMessage(0x03);
-//            }
+            MyData data = new MyData();
+            data.setNoteId(noteIdStr);
+            data.setExpected(exString);
+            data.setCurrent(currString);
+            data.setLoss(lossString);
+            data.setPrice(priceString);
+
+//            MyData data = new MyData(noteIdStr, exString, currString, lossString, priceString);
+            Log.e("4444", url + "\n" + data.toString());
+            boolean isSaved = saveData(data);
+            if (isSaved) {
+                handler.sendEmptyMessage(0x02);
+                urlList.add(url);
+            } else {
+                handler.sendEmptyMessage(0x03);
+            }
         }
     }
 
