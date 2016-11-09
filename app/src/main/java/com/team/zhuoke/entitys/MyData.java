@@ -1,4 +1,4 @@
-package com.team.zhuoke.androidjsoup;
+package com.team.zhuoke.entitys;
 
 /**
  * Created by Yunr on 2016/11/9.
