@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         final String url = inputLayout.getEditText().getText().toString();
-        Log.e("---", url);
+        Log.e("--333-", url);
 
         Runnable runnable = new Runnable() {
             @Override
