@@ -28,9 +28,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.team.zhuoke.androidjsoup.db.query.Op.INSERT;
-import static com.team.zhuoke.androidjsoup.db.query.Op.UPDATE;
-
 /**
  * 
  * 数据库存储数据服务. 外部不直接调用具体的存取逻辑
@@ -146,7 +143,6 @@ public class DatabaseStorageService implements IDatabaseProvider
         File dbFile = new File(dbRoot, filename);
         SQLiteOpenHelper dfireDBHelper =
             sqLiteOpenHelperFactory.newSQliteSqLiteOpenHelper(context, dbFile.getAbsolutePath(), null, version);
-        SQLiteDatabase db = dfireDBHelper.getWritableDatabase();
         return dfireDBHelper;
     }
     
