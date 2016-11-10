@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean isCopying = false;
 
+    private String oldText = "";
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -76,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case 0x03:
                     filedCount++;
                     setCount();
+                    break;
+                case 0x04:
+                    copy2SDCardBtn.setText(oldText);
                     break;
             }
         }
@@ -198,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         text = (TextView) findViewById(R.id.show_text);
         saveCount = (TextView) findViewById(R.id.save_text);
         copy2SDCardBtn = (Button) findViewById(R.id.button2);
+        oldText = copy2SDCardBtn.getText().toString();
     }
 
     private void setCount() {
@@ -253,12 +259,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                             File dbOldFile = new File(getDatabasePath("jsoup")+".db");
                             try {
-                                String oldText = copy2SDCardBtn.getText().toString();
                                 String tips = String.format("%s%s",oldText, "--拷贝中--");
                                 copy2SDCardBtn.setText(tips);
                                 FileUtil.copyFile(dbOldFile, dbFile);
                                 String tips2 = String.format("%s%s",oldText, "--拷贝完成--");
                                 copy2SDCardBtn.setText(tips2);
+                                handler.sendEmptyMessageDelayed(0x04, 1000);
                                 isCopying = false;
                             } catch (IOException e) {
                                 Log.e("TTT", e.getMessage(), e);
