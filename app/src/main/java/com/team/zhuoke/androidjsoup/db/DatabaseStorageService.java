@@ -75,8 +75,6 @@ public class DatabaseStorageService implements IDatabaseProvider
     
     private int version;
     
-    private File dbRoot;
-    
     private String mainDBFile;
     
     /**
@@ -86,9 +84,9 @@ public class DatabaseStorageService implements IDatabaseProvider
     
     private SQLiteOpenHelperFactory sqLiteOpenHelperFactory = null;
     
-    public DatabaseStorageService(Context context, int version, File dbRoot, String mainDBFile)
+    public DatabaseStorageService(Context context, int version, String mainDBFile)
     {
-        this(context, version, dbRoot, mainDBFile, new SQLiteOpenHelperFactory()
+        this(context, version, mainDBFile, new SQLiteOpenHelperFactory()
         {
             @Override
             public SQLiteOpenHelper newSQliteSqLiteOpenHelper(Context context, String name,
@@ -99,16 +97,11 @@ public class DatabaseStorageService implements IDatabaseProvider
         });
     }
     
-    public DatabaseStorageService(Context context, int version, File dbRoot, String mainDBFile,
+    public DatabaseStorageService(Context context, int version, String mainDBFile,
         SQLiteOpenHelperFactory sqLiteOpenHelperFactory)
     {
         this.context = context;
         this.version = version;
-        this.dbRoot = dbRoot;
-        if (!dbRoot.exists())
-        {
-            dbRoot.mkdirs();
-        }
         this.mainDBFile = mainDBFile;
         
         this.sqLiteOpenHelperFactory = sqLiteOpenHelperFactory;
@@ -140,9 +133,8 @@ public class DatabaseStorageService implements IDatabaseProvider
      */
     private SQLiteOpenHelper createSqLiteOpenHelper(String filename)
     {
-        File dbFile = new File(dbRoot, filename);
         SQLiteOpenHelper dfireDBHelper =
-            sqLiteOpenHelperFactory.newSQliteSqLiteOpenHelper(context, dbFile.getAbsolutePath(), null, version);
+            sqLiteOpenHelperFactory.newSQliteSqLiteOpenHelper(context, filename, null, version);
         dfireDBHelper.getWritableDatabase();
         return dfireDBHelper;
     }
@@ -650,7 +642,7 @@ public class DatabaseStorageService implements IDatabaseProvider
         {
             sqliteOpenHelper.close();
             
-            File dbFile = new File(dbRoot, filename);
+            File dbFile = new File(filename);
             if (dbFile.exists())
             {
                 dbFile.delete();

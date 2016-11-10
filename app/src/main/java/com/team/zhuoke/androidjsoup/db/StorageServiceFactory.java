@@ -9,8 +9,6 @@ import com.team.zhuoke.androidjsoup.db.exception.StorageException;
 import com.team.zhuoke.androidjsoup.db.impl.TransactionImpl;
 import com.team.zhuoke.androidjsoup.db.interfaces.ITransaction;
 
-import java.io.File;
-
 /**
  * 
  * 构造Storage相关服务
@@ -28,7 +26,7 @@ public class StorageServiceFactory
     
     private ITransaction transaction;
     
-    public StorageServiceFactory(Context context, File dbRoot, String mainDBFilename)
+    public StorageServiceFactory(Context context, String mainDBFilename)
     {
         PackageInfo packageInfo;
         try
@@ -36,7 +34,7 @@ public class StorageServiceFactory
             packageInfo =
                 context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_CONFIGURATIONS);
             int versionCode = packageInfo.versionCode;
-            databaseStorageService = new DatabaseStorageService(context, versionCode, dbRoot, mainDBFilename);
+            databaseStorageService = new DatabaseStorageService(context, versionCode, mainDBFilename);
             storageService = new StorageService(databaseStorageService);
             transaction = new TransactionImpl(storageService);
         }

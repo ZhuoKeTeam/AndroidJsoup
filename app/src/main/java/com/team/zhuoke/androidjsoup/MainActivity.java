@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -25,12 +27,14 @@ import com.squareup.okhttp.Response;
 import com.team.zhuoke.androidjsoup.db.DBUtils;
 import com.team.zhuoke.androidjsoup.db.interfaces.IMyDataService;
 import com.team.zhuoke.androidjsoup.db.table.MyData;
+import com.team.zhuoke.androidjsoup.util.FileUtil;
 import com.team.zhuoke.entitys.Note;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -48,8 +52,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //装载内容页地址
     private ArrayList<String> urlList;
     private int page;//页数
+    private Button copy2SDCardBtn;
 
     private IMyDataService myDataService;
+
+    private boolean isCopying = false;
 
     private Handler handler = new Handler() {
         @Override
@@ -84,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         initView();
         parse.setOnClickListener(this);
+        copy2SDCardBtn.setOnClickListener(this);
         //String url = "https://gupiao.caimao.com/weixin/note/reader/view/53103";
 
 
@@ -189,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         parse = (Button) findViewById(R.id.parse);
         text = (TextView) findViewById(R.id.show_text);
         saveCount = (TextView) findViewById(R.id.save_text);
+        copy2SDCardBtn = (Button) findViewById(R.id.button2);
     }
 
     private void setCount() {
@@ -197,13 +206,73 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        //页数
-        page = Integer.parseInt(inputLayout.getEditText().getText().toString());
+        switch (view.getId()){
+            case R.id.parse:
+                //页数
+                page = Integer.parseInt(inputLayout.getEditText().getText().toString());
 
-        successCount = 0;
-        filedCount = 0;
+                successCount = 0;
+                filedCount = 0;
 
-        getUrl(page);
+                getUrl(page);
+                break;
+            case R.id.button2:
+                if(!isCopying){
+                    isCopying = true;
+                    String state = Environment.getExternalStorageState();
+                    if (Environment.MEDIA_MOUNTED.equals(state))
+                    {
+                        int REQUEST_EXTERNAL_STORAGE = 1;
+                        String[] PERMISSIONS_STORAGE = {
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        };
+                        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                        if (permission != PackageManager.PERMISSION_GRANTED) {
+                            // We don't have permission so prompt the user
+                            ActivityCompat.requestPermissions(
+                                    this,
+                                    PERMISSIONS_STORAGE,
+                                    REQUEST_EXTERNAL_STORAGE
+                            );
+                        }else{
+                            File appRootFile = new File(Environment.getExternalStorageDirectory(), "jsoup");
+                            FileUtil.makeDirIfNotExist(appRootFile);
+                            File dbRootFile = new File(appRootFile, "db");
+                            FileUtil.makeDirIfNotExist(dbRootFile);
+                            File dbFile = new File(dbRootFile, "jsoup.db");
+                            if(dbFile.exists()){
+                                dbFile.delete();
+                            }else{
+                                try {
+                                    dbFile.createNewFile();
+                                } catch (IOException e) {
+
+                                }
+                            }
+                            File dbOldFile = new File(getDatabasePath("jsoup")+".db");
+                            try {
+                                String oldText = copy2SDCardBtn.getText().toString();
+                                String tips = String.format("%s%s",oldText, "--拷贝中--");
+                                copy2SDCardBtn.setText(tips);
+                                FileUtil.copyFile(dbOldFile, dbFile);
+                                String tips2 = String.format("%s%s",oldText, "--拷贝完成--");
+                                copy2SDCardBtn.setText(tips2);
+                                isCopying = false;
+                            } catch (IOException e) {
+                                Log.e("TTT", e.getMessage(), e);
+                                isCopying = false;
+                            }
+                        }
+                    }else{
+                        Toast.makeText(this, "拷贝失败，SDCard不可用", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(this, "正在拷贝中", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
     /**

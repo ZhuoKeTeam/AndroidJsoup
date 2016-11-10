@@ -36,6 +36,12 @@
         android:layout_height="wrap_content"
         android:text="fuck" />
 
+    <Button
+        android:text="拷贝到/sdcard/jsoup/db/目录下"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2" />
+
     <TextView
         android:id="@+id/save_text"
         android:layout_width="match_parent"

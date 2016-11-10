@@ -1,12 +1,8 @@
 package com.team.zhuoke.androidjsoup.db;
 
 import android.content.Context;
-import android.os.Environment;
 
 import com.team.zhuoke.androidjsoup.db.interfaces.IBaseService;
-import com.team.zhuoke.androidjsoup.util.FileUtil;
-
-import java.io.File;
 
 
 /**
@@ -37,39 +33,16 @@ public class DBUtils
      * ID生成器
      */
     private UUIDGenerator idGenerator = null;
-    
-    /**
-     * app存放文件的根目录
-     */
-    private File appRootFile;
-    
-    /**
-     * 数据库文件夹
-     */
-    private File dbRoot;
-    
+
     public void initDB(Context applicationContext)
     {
         this.applicationContext = applicationContext;
         this.listenerRegister = new ListenerRegister();
         Broadcast broadcast = new Broadcast(listenerRegister);
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state))
-        {
-            appRootFile = new File(Environment.getExternalStorageDirectory(), "jsoup");
-            FileUtil.makeDirIfNotExist(appRootFile);
-        }
-        else
-        {
-            appRootFile = applicationContext.getFilesDir();
-            FileUtil.makeDirIfNotExist(appRootFile);
-        }
-        dbRoot = new File(appRootFile, "jsoup");
-        FileUtil.makeDirIfNotExist(dbRoot);
 
         idGenerator = new UUIDGenerator();
         StorageServiceFactory storageServiceFactory =
-                new StorageServiceFactory(applicationContext, dbRoot, "jsoup.db");
+                new StorageServiceFactory(applicationContext, "jsoup.db");
         DatabaseStorageService ds = storageServiceFactory.getDatabaseStorageService();
         ds.setMessageDispatcher(broadcast);
         appLock = new AppLock(storageServiceFactory.getTransaction());
@@ -152,14 +125,5 @@ public class DBUtils
         {
             throw new IllegalArgumentException("请先初始化applicationContext");
         }
-    }
-    
-    /**
-     * 得到APP的根目录
-     * @return
-     */
-    public File getAppRootFile()
-    {
-        return appRootFile;
     }
 }
