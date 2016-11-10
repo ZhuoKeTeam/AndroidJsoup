@@ -3,10 +3,6 @@ package com.team.zhuoke.androidjsoup;
 import android.app.Application;
 import android.content.Context;
 
-import com.facebook.stetho.DumperPluginsProvider;
-import com.facebook.stetho.Stetho;
-import com.facebook.stetho.dumpapp.DumperPlugin;
-import com.facebook.stetho.dumpapp.plugins.HprofDumperPlugin;
 import com.team.zhuoke.androidjsoup.db.DBUtils;
 
 /**
@@ -28,17 +24,17 @@ public class IApplication extends Application{
         INSTANCE = this;
         final Context mContext = this;
         DBUtils.getInstance().initDB(getApplicationContext());
-        Stetho.initialize(Stetho.newInitializerBuilder(mContext)
-                .enableDumpapp(new DumperPluginsProvider() {
-                    @Override
-                    public Iterable<DumperPlugin> get() {
-                        return new Stetho.DefaultDumperPluginsBuilder(mContext)
-                                .provide(new HprofDumperPlugin(mContext))
-                                .finish();
-                    }
-                })
-                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(mContext))
-                .build());
-        Stetho.initializeWithDefaults(mContext);
+//        Stetho.initialize(Stetho.newInitializerBuilder(mContext)
+//                .enableDumpapp(new DumperPluginsProvider() {
+//                    @Override
+//                    public Iterable<DumperPlugin> get() {
+//                        return new Stetho.DefaultDumperPluginsBuilder(mContext)
+//                                .provide(new HprofDumperPlugin(mContext))
+//                                .finish();
+//                    }
+//                })
+//                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(mContext))
+//                .build());
+//        Stetho.initializeWithDefaults(mContext);
     }
 }

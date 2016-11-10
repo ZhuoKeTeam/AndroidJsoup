@@ -206,8 +206,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 保存数据
      */
     private boolean saveData(MyData data) {
-
-
+        myDataService.addMyData(data);
         return true;
     }
 }

@@ -143,6 +143,7 @@ public class DatabaseStorageService implements IDatabaseProvider
         File dbFile = new File(dbRoot, filename);
         SQLiteOpenHelper dfireDBHelper =
             sqLiteOpenHelperFactory.newSQliteSqLiteOpenHelper(context, dbFile.getAbsolutePath(), null, version);
+        dfireDBHelper.getWritableDatabase();
         return dfireDBHelper;
     }
     
