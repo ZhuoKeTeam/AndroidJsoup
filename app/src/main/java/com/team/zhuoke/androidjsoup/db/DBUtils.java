@@ -69,7 +69,7 @@ public class DBUtils
 
         idGenerator = new UUIDGenerator();
         StorageServiceFactory storageServiceFactory =
-                new StorageServiceFactory(applicationContext, dbRoot, "jsoup");
+                new StorageServiceFactory(applicationContext, dbRoot, "jsoup.db");
         DatabaseStorageService ds = storageServiceFactory.getDatabaseStorageService();
         ds.setMessageDispatcher(broadcast);
         appLock = new AppLock(storageServiceFactory.getTransaction());
