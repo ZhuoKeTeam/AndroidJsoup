@@ -59,6 +59,11 @@ public class BaseMyData extends Base
     public static final String ENDTIME = "ENDTIME";
 
     /**
+     * 当前页面地址
+     */
+    public static final String  PAGE_ADDRESS = "PAGE_ADDRESS";
+
+    /**
      * NoteId
      */
     protected String noteId;
@@ -84,6 +89,10 @@ public class BaseMyData extends Base
      * 结束时间
      */
     protected String endTime;
+    /**
+     * 当前 page 页面
+     */
+    protected String pageAddress;
 
     /**
      * 得到NoteId
@@ -169,6 +178,14 @@ public class BaseMyData extends Base
         return endTime;
     }
 
+    public String getPageAddress() {
+        return pageAddress;
+    }
+
+    public void setPageAddress(String pageAddress) {
+        this.pageAddress = pageAddress;
+    }
+
     /**
      * 设置结束时间
      *
@@ -186,6 +203,7 @@ public class BaseMyData extends Base
         put(contentValues, LOSS, loss);
         put(contentValues, PRICE, price);
         put(contentValues,ENDTIME,endTime);
+        put(contentValues, PAGE_ADDRESS, pageAddress);
     }
     
     @Override
@@ -198,6 +216,7 @@ public class BaseMyData extends Base
         loss = cursor.getString(cursor.getColumnIndex(LOSS));
         price = cursor.getString(cursor.getColumnIndex(PRICE));
         endTime=cursor.getString(cursor.getColumnIndex(ENDTIME));
+        pageAddress=cursor.getString(cursor.getColumnIndex(PAGE_ADDRESS));
     }
     
     @Override

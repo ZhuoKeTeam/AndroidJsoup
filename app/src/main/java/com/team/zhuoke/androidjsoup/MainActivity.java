@@ -328,6 +328,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             data.setLoss(lossString);
             data.setPrice(priceString);
             data.setEndTime(endTimeStr);
+            data.setPageAddress(url);
             List<MyData> oldMyDatas = baseService.getAll(MyData.class);
             if (oldMyDatas != null && !oldMyDatas.isEmpty()) {
                 if (!oldMyDatas.contains(data)) {

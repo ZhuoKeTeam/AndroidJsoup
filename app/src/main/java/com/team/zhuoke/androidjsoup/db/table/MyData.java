@@ -74,6 +74,7 @@ public class MyData extends BaseMyData implements IOp, IChangeObject
                 ", loss='" + loss + '\'' +
                 ", price='" + price + '\'' +
                 ", endTime='" + endTime + '\'' +
+                ", page_address='" + pageAddress + '\'' +
                 '}';
     }
 }
