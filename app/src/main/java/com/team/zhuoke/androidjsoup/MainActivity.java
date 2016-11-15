@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.parse:
                 //页数
                 page = Integer.parseInt(inputLayout.getEditText().getText().toString());
@@ -228,11 +228,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getUrl(page);
                 break;
             case R.id.button2:
-                if(!isCopying){
+                if (!isCopying) {
                     isCopying = true;
                     String state = Environment.getExternalStorageState();
-                    if (Environment.MEDIA_MOUNTED.equals(state))
-                    {
+                    if (Environment.MEDIA_MOUNTED.equals(state)) {
                         int REQUEST_EXTERNAL_STORAGE = 1;
                         String[] PERMISSIONS_STORAGE = {
                                 Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -247,27 +246,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     PERMISSIONS_STORAGE,
                                     REQUEST_EXTERNAL_STORAGE
                             );
-                        }else{
+                        } else {
                             File appRootFile = new File(Environment.getExternalStorageDirectory(), "jsoup");
                             FileUtil.makeDirIfNotExist(appRootFile);
                             File dbRootFile = new File(appRootFile, "db");
                             FileUtil.makeDirIfNotExist(dbRootFile);
                             File dbFile = new File(dbRootFile, "jsoup.db");
-                            if(dbFile.exists()){
+                            if (dbFile.exists()) {
                                 dbFile.delete();
-                            }else{
+                            } else {
                                 try {
                                     dbFile.createNewFile();
                                 } catch (IOException e) {
 
                                 }
                             }
-                            File dbOldFile = new File(getDatabasePath("jsoup")+".db");
+                            File dbOldFile = new File(getDatabasePath("jsoup") + ".db");
                             try {
-                                String tips = String.format("%s%s",oldText, "--拷贝中--");
+                                String tips = String.format("%s%s", oldText, "--拷贝中--");
                                 copy2SDCardBtn.setText(tips);
                                 FileUtil.copyFile(dbOldFile, dbFile);
-                                String tips2 = String.format("%s%s",oldText, "--拷贝完成--");
+                                String tips2 = String.format("%s%s", oldText, "--拷贝完成--");
                                 copy2SDCardBtn.setText(tips2);
                                 handler.sendEmptyMessageDelayed(0x04, 1000);
                                 isCopying = false;
@@ -276,10 +275,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 isCopying = false;
                             }
                         }
-                    }else{
+                    } else {
                         Toast.makeText(this, "拷贝失败，SDCard不可用", Toast.LENGTH_SHORT).show();
                     }
-                }else{
+                } else {
                     Toast.makeText(this, "正在拷贝中", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -317,6 +316,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 价格
         Element price = body.select("a.btn_red.full.fill.huge.m_t_10.no_radius").first();
         String priceString;
+        // 结束时间
+        Element endTime = body.select("div.content").first();
+        String endTimeStr = endTime.text();
         if (price != null) {
             priceString = price.text();
             MyData data = new MyData();
@@ -325,9 +327,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             data.setCurrent(currString);
             data.setLoss(lossString);
             data.setPrice(priceString);
+            data.setEndTime(endTimeStr);
             List<MyData> oldMyDatas = baseService.getAll(MyData.class);
-            if(oldMyDatas != null && !oldMyDatas.isEmpty()){
-                if(!oldMyDatas.contains(data)){
+            if (oldMyDatas != null && !oldMyDatas.isEmpty()) {
+                if (!oldMyDatas.contains(data)) {
                     Log.e("4444", url + "\n" + data.toString());
                     boolean isSaved = saveData(data);
                     if (isSaved) {
@@ -336,10 +339,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
                         handler.sendEmptyMessage(0x03);
                     }
-                }else{
-                    Log.e("4444", url + "\n" + data.getNoteId()+"已经添加过了");
+                } else {
+                    Log.e("4444", url + "\n" + data.getNoteId() + "已经添加过了");
                 }
-            }else{
+            } else {
                 boolean isSaved = saveData(data);
                 if (isSaved) {
                     handler.sendEmptyMessage(0x02);
@@ -355,12 +358,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 保存数据
      */
     private boolean saveData(MyData data) {
-        Log.e("TTT", "--data.toString="+data.toString()+"--");
+        Log.e("TTT", "--data.toString=" + data.toString() + "--");
         MyData storeData = myDataService.addMyData(data);
-        if(storeData != null){
-            Log.e("TTT", "--storeData.toString="+storeData.toString()+"--");
+        if (storeData != null) {
+            Log.e("TTT", "--storeData.toString=" + storeData.toString() + "--");
             return true;
-        }else{
+        } else {
             Log.e("TTT", "--storeData is null--");
             return false;
         }

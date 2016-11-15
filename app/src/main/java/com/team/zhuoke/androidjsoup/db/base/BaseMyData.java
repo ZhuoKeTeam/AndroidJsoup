@@ -160,7 +160,23 @@ public class BaseMyData extends Base
     public void setPrice(String price) {
         this.price = price;
     }
+    /**
+     * 得到结束时间
+     *
+     * @return
+     */
+    public String getEndTime() {
+        return endTime;
+    }
 
+    /**
+     * 设置结束时间
+     *
+     * @return
+     */
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
     @Override
     protected void processContentValues(ContentValues contentValues)
     {
@@ -169,6 +185,7 @@ public class BaseMyData extends Base
         put(contentValues, CURRENT, current);
         put(contentValues, LOSS, loss);
         put(contentValues, PRICE, price);
+        put(contentValues,ENDTIME,endTime);
     }
     
     @Override
@@ -180,6 +197,7 @@ public class BaseMyData extends Base
         current = cursor.getString(cursor.getColumnIndex(CURRENT));
         loss = cursor.getString(cursor.getColumnIndex(LOSS));
         price = cursor.getString(cursor.getColumnIndex(PRICE));
+        endTime=cursor.getString(cursor.getColumnIndex(ENDTIME));
     }
     
     @Override
