@@ -28,9 +28,10 @@ public class DBHelper extends SQLiteOpenHelper
             "LOSS                 VARCHAR(32)           NULL,\n" +
             "PRICE                VARCHAR(32)           NULL,\n" +
             "ISVALID              INT2                  NOT NULL,\n" +
-            "CREATETIME           INT8, \n" +
-            "OPTIME               INT8, \n" +
+            "CREATETIME           VARCHAR(32)           NOT NULL,\n" +
+            "OPTIME               VARCHAR(32)           NOT NULL,\n" +
             "LASTVER              INT8                  NOT NULL,\n" +
+            "ENDTIME              VARCHAR(32)           NULL,\n" +
             "CONSTRAINT PK_SYSTEMTYPE PRIMARY KEY (ID)\n" +
             ");";
     

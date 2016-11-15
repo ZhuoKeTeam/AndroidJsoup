@@ -21,7 +21,8 @@ public class IMyDataServiceImpl implements IMyDataService{
 
     @Override
     public MyData addMyData(MyData myData) {
-        return baseService.save(myData);
+        MyData storeMyData = baseService.save(myData);
+        return storeMyData;
     }
 
     @Override

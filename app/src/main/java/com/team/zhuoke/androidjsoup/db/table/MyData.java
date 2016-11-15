@@ -52,5 +52,28 @@ public class MyData extends BaseMyData implements IOp, IChangeObject
             .append(task.getLastVer());
         return sBufferThis.toString().equals(sBufferOld.toString());
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MyData))
+            return false;
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        MyData myData = (MyData)obj;
+        return myData.getNoteId().equals(getNoteId());
+    }
+
+    @Override
+    public String toString() {
+        return "BaseMyData{" +
+                "current='" + current + '\'' +
+                ", noteId='" + noteId + '\'' +
+                ", expected='" + expected + '\'' +
+                ", loss='" + loss + '\'' +
+                ", price='" + price + '\'' +
+                ", endTime='" + endTime + '\'' +
+                '}';
+    }
 }

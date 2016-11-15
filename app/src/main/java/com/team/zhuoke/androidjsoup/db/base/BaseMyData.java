@@ -54,26 +54,36 @@ public class BaseMyData extends Base
     public static final String PRICE = "PRICE";
 
     /**
+     * 结束时间字段
+     */
+    public static final String ENDTIME = "ENDTIME";
+
+    /**
      * NoteId
      */
-    private String noteId;
+    protected String noteId;
 
     /**
      * 预期收益
      */
-    private String expected;
+    protected String expected;
     /**
      *当前收益
      */
-    private String current;
+    protected String current;
     /**
      *止损
      */
-    private String loss;
+    protected String loss;
     /**
      *价格
      */
-    private String price;
+    protected String price;
+
+    /**
+     * 结束时间
+     */
+    protected String endTime;
 
     /**
      * 得到NoteId
@@ -177,5 +187,4 @@ public class BaseMyData extends Base
     {
         return TABLE_NAME;
     }
-    
 }

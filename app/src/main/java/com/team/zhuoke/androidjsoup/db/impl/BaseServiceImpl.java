@@ -2,6 +2,7 @@ package com.team.zhuoke.androidjsoup.db.impl;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.team.zhuoke.androidjsoup.db.AbstractStorage;
 import com.team.zhuoke.androidjsoup.db.Base;
@@ -21,6 +22,7 @@ import com.team.zhuoke.androidjsoup.db.query.InValue;
 import com.team.zhuoke.androidjsoup.db.query.Page;
 import com.team.zhuoke.androidjsoup.db.query.QueryBuilder;
 import com.team.zhuoke.androidjsoup.db.query.SqlQueryBuilder;
+import com.team.zhuoke.androidjsoup.util.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -101,7 +103,8 @@ public class BaseServiceImpl implements IBaseService
     @Override
     public <T extends AbstractStorage> T save(T t)
     {
-        t.setOpTime(System.currentTimeMillis());
+        String opTimeStr = TimeUtils.timeStamp2DateStr(System.currentTimeMillis());
+        t.setOpTime(opTimeStr);
         if (t instanceof ISignId)
         {
             T oldObject = (T)storageService.get(t.getClass(), t.getId());
@@ -121,10 +124,11 @@ public class BaseServiceImpl implements IBaseService
             }
             else
             {
-                Long createTime = t.getCreateTime();
-                if (createTime == null || createTime == 0)
+                String createTimeStr = t.getCreateTime();
+                if (TextUtils.isEmpty(createTimeStr))
                 {
-                    t.setCreateTime(System.currentTimeMillis());
+                    String createTime = TimeUtils.timeStamp2DateStr(System.currentTimeMillis());
+                    t.setCreateTime(createTime);
                 }
                 t.setLastVer(1);
                 t.setIsValid(Base.TRUE);
@@ -136,10 +140,11 @@ public class BaseServiceImpl implements IBaseService
         {
             if (t.getId() == null)
             {
-                Long createTime = t.getCreateTime();
-                if (createTime == null || createTime == 0)
+                String createTimeStr = t.getCreateTime();
+                if (TextUtils.isEmpty(createTimeStr))
                 {
-                    t.setCreateTime(System.currentTimeMillis());
+                    String createTime = TimeUtils.timeStamp2DateStr(System.currentTimeMillis());
+                    t.setCreateTime(createTime);
                 }
                 init(t);
                 storageService.save(t);
@@ -161,10 +166,11 @@ public class BaseServiceImpl implements IBaseService
     {
         if (t.getId() == null)
         {
-            Long createTime = t.getCreateTime();
-            if (createTime == null || createTime == 0)
+            String createTimeStr = t.getCreateTime();
+            if (TextUtils.isEmpty(createTimeStr))
             {
-                t.setCreateTime(System.currentTimeMillis());
+                String createTime = TimeUtils.timeStamp2DateStr(System.currentTimeMillis());
+                t.setCreateTime(createTime);
             }
             t.setLastVer(1);
             t.setIsValid(Base.TRUE);

@@ -25,6 +25,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.team.zhuoke.androidjsoup.db.DBUtils;
+import com.team.zhuoke.androidjsoup.db.interfaces.IBaseService;
 import com.team.zhuoke.androidjsoup.db.interfaces.IMyDataService;
 import com.team.zhuoke.androidjsoup.db.table.MyData;
 import com.team.zhuoke.androidjsoup.util.FileUtil;
@@ -38,6 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button copy2SDCardBtn;
 
     private IMyDataService myDataService;
+
+    private IBaseService baseService;
 
     private boolean isCopying = false;
 
@@ -92,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myDataService = DBUtils.getInstance().getMobileBeanFactory().getBean(IMyDataService.class);
+        baseService = DBUtils.getInstance().getMobileBeanFactory().getBean(IBaseService.class);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initView();
@@ -320,15 +325,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             data.setCurrent(currString);
             data.setLoss(lossString);
             data.setPrice(priceString);
-
-//            MyData data = new MyData(noteIdStr, exString, currString, lossString, priceString);
-            Log.e("4444", url + "\n" + data.toString());
-            boolean isSaved = saveData(data);
-            if (isSaved) {
-                handler.sendEmptyMessage(0x02);
-                urlList.add(url);
-            } else {
-                handler.sendEmptyMessage(0x03);
+            List<MyData> oldMyDatas = baseService.getAll(MyData.class);
+            if(oldMyDatas != null && !oldMyDatas.isEmpty()){
+                if(!oldMyDatas.contains(data)){
+                    Log.e("4444", url + "\n" + data.toString());
+                    boolean isSaved = saveData(data);
+                    if (isSaved) {
+                        handler.sendEmptyMessage(0x02);
+                        urlList.add(url);
+                    } else {
+                        handler.sendEmptyMessage(0x03);
+                    }
+                }else{
+                    Log.e("4444", url + "\n" + data.getNoteId()+"已经添加过了");
+                }
+            }else{
+                boolean isSaved = saveData(data);
+                if (isSaved) {
+                    handler.sendEmptyMessage(0x02);
+                    urlList.add(url);
+                } else {
+                    handler.sendEmptyMessage(0x03);
+                }
             }
         }
     }
@@ -337,7 +355,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 保存数据
      */
     private boolean saveData(MyData data) {
-        myDataService.addMyData(data);
-        return true;
+        Log.e("TTT", "--data.toString="+data.toString()+"--");
+        MyData storeData = myDataService.addMyData(data);
+        if(storeData != null){
+            Log.e("TTT", "--storeData.toString="+storeData.toString()+"--");
+            return true;
+        }else{
+            Log.e("TTT", "--storeData is null--");
+            return false;
+        }
     }
 }

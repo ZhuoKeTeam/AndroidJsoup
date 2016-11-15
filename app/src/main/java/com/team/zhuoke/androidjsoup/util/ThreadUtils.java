@@ -8,7 +8,9 @@ public class ThreadUtils
      */
     public static void run(Runnable task)
     {
-        new Thread(task).start();
+        Thread thread = new Thread(task);
+        thread.setName("ThreadUtils--1");
+        thread.start();
     }
     
     /**
@@ -25,6 +27,7 @@ public class ThreadUtils
             }
         });
         thread.setPriority(priority);
+        thread.setName("ThreadUtils--2");
         thread.start();
     }
 }

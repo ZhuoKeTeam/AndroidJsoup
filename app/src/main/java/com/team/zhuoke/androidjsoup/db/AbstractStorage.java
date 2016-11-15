@@ -75,9 +75,9 @@ public abstract class AbstractStorage implements Cloneable, Serializable, DataIn
      */
     private Short isValid;
     
-    private Long createTime;
+    private String createTime;
     
-    private Long opTime;
+    private String opTime;
     
     public String getId()
     {
@@ -98,27 +98,23 @@ public abstract class AbstractStorage implements Cloneable, Serializable, DataIn
     {
         this.lastVer = lastVer;
     }
-    
-    public Long getCreateTime()
-    {
+
+    public String getCreateTime() {
         return createTime;
     }
-    
-    public void setCreateTime(Long createTime)
-    {
+
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
-    
-    public Long getOpTime()
-    {
+
+    public String getOpTime() {
         return opTime;
     }
-    
-    public void setOpTime(Long opTime)
-    {
+
+    public void setOpTime(String opTime) {
         this.opTime = opTime;
     }
-    
+
     /**
      * 得到是否有效.
      *
@@ -252,8 +248,8 @@ public abstract class AbstractStorage implements Cloneable, Serializable, DataIn
         id = cursor.getString(cursor.getColumnIndex(ID));
         isValid = cursor.getShort(cursor.getColumnIndex(ISVALID));
         lastVer = cursor.getInt(cursor.getColumnIndex(LASTVER));
-        createTime = cursor.getLong(cursor.getColumnIndex(CREATETIME));
-        opTime = cursor.getLong(cursor.getColumnIndex(OPTIME));
+        createTime = cursor.getString(cursor.getColumnIndex(CREATETIME));
+        opTime = cursor.getString(cursor.getColumnIndex(OPTIME));
         doInit(cursor);
     }
     
