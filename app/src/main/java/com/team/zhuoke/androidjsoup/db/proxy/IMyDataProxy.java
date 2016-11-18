@@ -81,7 +81,7 @@ public class IMyDataProxy implements IMyDataService
             appLock.lockWithMonitor();
             if (!TextUtils.isEmpty(myDataId) && myData != null)
             {
-                dataService.updateMyData(myDataId, myData);
+                return dataService.updateMyData(myDataId, myData);
             }
         }
         catch (Exception e)
