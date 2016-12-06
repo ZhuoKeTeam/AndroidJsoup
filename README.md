@@ -77,14 +77,13 @@ https://jsoup.org/
 1. 首先看这个语法能否唯一确定这个数据，最好的办法是让代码给我们测一下.
 因为选择器选择后返回的是Elements，查看它的size就可以确定是否唯一。
 
-` Document doc = Jsoup.parse(new URL(
+    Document doc = Jsoup.parse(new URL(
 					"https://gupiao.caimao.com/weixin/note/reader/view/53103"),
 					6000);
 			Elements elements = doc
 					.body()
 					.select("div#doc_section.doc_section.show_foot > div.user_card.user_masthead > a.clear_fix > p.name > span");
 			System.out.println(elements.size());
-			`
 
 好的，size为1，通过
 
@@ -96,13 +95,13 @@ https://jsoup.org/
 然后接first()再取其值:
 
 
-  `      Element element = doc
+    Element element = doc
 					.body()
 					.select("div#doc_section.doc_section.show_foot > div.user_card.user_masthead > a.clear_fix > p.name > span")
 					.first();
 			String text = element.text();
 			System.out.println(text);
-`
+
 
 这样就拿到了第一个数据
 
