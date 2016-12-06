@@ -20,25 +20,33 @@
   官方文档里已经说的比较清楚，需要的知识点也不多。
   这里就不再絮叨一步步该怎么使用了，大家参考文档就可以了。
   下面简单说下需要的知识和一些小技巧。
+  
 1. html的结构
   Docment :整个页面
   Element:某一个节点
+  
 2. CSS选择器
     css里的选择器要熟悉(不熟悉也没关系，还有其他解析的方法)
+    
 3. 逻辑思路
   因为html页面通常是各种嵌套，所以头脑要清晰
+  
 4. 地址
   http://www.open-open.com/jsoup/parsing-a-document.htm
 这里是中文文档，通过目录大家可以看出，没有太多难点。
+
 https://jsoup.org/
 这是官方网站
 
 ![ZhuoKeTeam1.png](http://upload-images.jianshu.io/upload_images/1383797-fa7be66f3cbf3875.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 一些小技巧
+
 拿Chrome说明
+
 假如我要抓取这个页面的某些数据
   https://gupiao.caimao.com/weixin/note/reader/view/53103
+  
 抓取画框里的数据，
 一个Name，一个预期收益
 
