@@ -77,28 +77,32 @@ https://jsoup.org/
 1. 首先看这个语法能否唯一确定这个数据，最好的办法是让代码给我们测一下.
 因为选择器选择后返回的是Elements，查看它的size就可以确定是否唯一。
 
-
-     Document doc = Jsoup.parse(new URL(
+` Document doc = Jsoup.parse(new URL(
 					"https://gupiao.caimao.com/weixin/note/reader/view/53103"),
 					6000);
 			Elements elements = doc
 					.body()
 					.select("div#doc_section.doc_section.show_foot > div.user_card.user_masthead > a.clear_fix > p.name > span");
 			System.out.println(elements.size());
+			`
 
 好的，size为1，通过
+
 ![Paste_Image.png](http://upload-images.jianshu.io/upload_images/1383797-996d46724cf2c74f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
   ##### Tip:" > "这个符号的左右是有空格的
 2. 唯一确定这个数据后，后面就几乎没问题了。
+
 然后接first()再取其值:
 
-        Element element = doc
+
+  `      Element element = doc
 					.body()
 					.select("div#doc_section.doc_section.show_foot > div.user_card.user_masthead > a.clear_fix > p.name > span")
 					.first();
 			String text = element.text();
 			System.out.println(text);
+`
 
 这样就拿到了第一个数据
 
@@ -108,14 +112,19 @@ https://jsoup.org/
 
 
 1. 进行分析，还是那个小技巧，把右下角的css选择器放进代码中进行查看。
+
+`
          Document doc = Jsoup.parse(new URL(
 					"https://gupiao.caimao.com/weixin/note/reader/view/53103"),
 					6000);
 			Elements elements=doc.body().select("div#doc_section.doc_section.show_foot > div.note_detail > div.grid > p.font_red");
 			System.out.println(elements.size());
+			`
+			
 发现是2，也就是这个选择语句不能唯一确定数据，那么就要另加分析了
 
 观察数据附近和这个页面。
+
 
 ![Paste_Image.png](http://upload-images.jianshu.io/upload_images/1383797-d1f7315cf45f703b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
